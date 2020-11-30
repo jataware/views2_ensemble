@@ -86,6 +86,30 @@ runs:
         start: 485  # 2020.05
         end: 522    # 2023.06
 
+  d_2020_10_01_prelim:
+    # A preliminary run with OSA only, XGB and DS not merged yet =(
+    # Includes the A partition so as to not break any compatibility for now
+    A: # Calibration period for B
+      train:
+        start: 121  # 1990.01
+        end: 396    # 2012.12
+      predict:
+        start: 397  # 2013.01
+        end: 432    # 2015.12,
+    B:  # Evaluation period. Calibration for C.
+      train:
+        start: 121  # 1990.01
+        end: 432    # 2015.12
+      predict:
+        start: 433  # 2016.01,
+        end: 468    # 2018.12, last month yearly data
+    C:
+      train:
+        start: 121  # 1990.01
+        end: 480    # 2019.12
+      predict:
+        start: 490  # 2020.10
+        end: 527    # 2023.11
 
   r_2020_02_01:
     B:
