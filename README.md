@@ -10,6 +10,21 @@ Hegre, Håvard, Marie Allansson, Matthias Basedau, Michael Colaresi, Mihai Croic
 
 Github: https://github.com/UppsalaConflictDataProgram/OpenViEWS2
 
+
+## Use Case:
+
+The user will run the docker container with any parameters they want to perturb.
+
+    docker run views2_ensemble "--state_date 493" "--end_date 530" 
+This will run the ensemble with no perturbation and return the prediction for the months 493 to 530. This hypothical result might look like the output below:
+**![](https://lh3.googleusercontent.com/0YQ2LUaG_6dILZHFpot8EXdrcRPhCLQy7ay7_XZP-v92-24jZdoS0yrEcNwJnor9IFQ60RSJybc1cmkCJwAe7WCUH3C1bAeyQZzuhjLzNuYDcIgGITe6JQNCZVdSHNXs0utmNDcy6tw)**
+Now we return it but perturb the data: 
+
+    docker run views2_ensemble "--state_date 493" "--end_date 530" "--gdp_pcap -.25"  "--infant_mortality -.15"  " --liberalDemocracyIndex -.15"
+
+In this example we are decreasing gdp per capital by 25%, increasing infant mortality by 15% and decreasing liberal democracy index by 15 percent. The output shows a few countries with much high risk of violence over the next 3 years. 
+**![](https://lh6.googleusercontent.com/_262PTlql9C8YdV84-Gy-jsJwErvd9u0yf1z1H_cFM2RM7qB9q_KoWIGBaO14A7semciunHmA73YILeJn0tA8uW2yClg1AxMpqoO6VU08iGbhPk-EbZXakUmAyYy6DMbhwf4mlTLYhQ)**
+
 # **I. Ensemble Inputs**
  **Open Source Data**:
  The data used in the models can be found at these databases:
