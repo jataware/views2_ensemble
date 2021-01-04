@@ -85,6 +85,10 @@ The script looks for any parameters passed by the user to determine if the dataf
 - -Liberal Democracy Index:  
 
 
+| First Header  | Second Header |
+| ------------- | ------------- |
+| Content Cell  | Content Cell  |
+| Content Cell  | Content Cell  |
 
 Countries you can select to perturb: 
 
