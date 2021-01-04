@@ -22,6 +22,7 @@ The user will run the docker container with any parameters they want to perturb.
 
 
 In this example we are decreasing gdp per capital by 25%, increasing infant mortality by 15% and decreasing liberal democracy index by 15 percent. The output shows a few countries with much high risk of violence over the next 3 years. Now with perturbing the data: 
+
     docker run views2_ensemble "--state_date 493" "--end_date 530" "--gdp_pcap -.25"  "--infant_mortality -.15"  " --liberalDemocracyIndex -.15"
 
 
