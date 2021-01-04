@@ -84,6 +84,7 @@ The script looks for any parameters passed by the user to determine if the dataf
 - --infant_mortality: a percentage perturbation against annual infant mortality rate (wdi_sp_dyn_imrt_in) where 0 is baseline (no perturbation)
 - -Liberal Democracy Index:  
 
+Countries available to perturb. Will update this list with final output results. 
 
 | ID  | Country |
 | ------------- | ------------- |
@@ -154,75 +155,5 @@ The script looks for any parameters passed by the user to determine if the dataf
 65| Zanzibar |
 66| Zimbabwe |
 
-Countries you can select to perturb: 
-
-| Country |  
-|--|--|
-| Algeria |
-| Angola |
-| Bahrain |
-| Benin |
-| Botswana |
-| Burkina Faso |
-| Burundi |
-| Cameroon |
-| Central African Republic |
-| Chad |
-| Comoros |
-| Congo |
-| Congo, DRC |
-| Cote d'Ivoire |
-| Djibouti |
-| Egypt |
-| Egypt (United Arab Republic) |
-| Equatorial Guinea |
-| Eritrea |
-| Ethiopia |
-| Gabon |
-| Ghana |
-| Guinea |
-| Guinea-Bissau |
-| Israel |
-| Jordan |
-| Kenya |
-| Kuwait |
-| Lesotho |
-| Liberia |
-| Libya 
-| Madagascar |
-| Malawi |
-| Mali |
-| Mali Federation |
-| Mauritania |
-| Morocco |
-| Mozambique |
-| Namibia |
-| Niger |
-| Nigeria |
-| Oman |
-| Qatar |
-| Rwanda |
-| Sao Tome and Principe |
-| Saudi Arabia |
-| Senegal |
-| Seychelles |
-| Sierra Leone |
-| Somalia |
-| South Africa |
-| South Sudan |
-| Sudan |
-| Swaziland |
-| Tanzania |
-| The Gambia |
-| Togo |
-| Tunisia |
-| Uganda |
-| United Arab Emirates |
-| Yemen |
-| Yemen Arab Republic |
-| Yemen People's Republic |
-| Zambia |
-| Zanzibar |
-| Zimbabwe |
 
 
