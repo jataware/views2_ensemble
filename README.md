@@ -87,8 +87,72 @@ The script looks for any parameters passed by the user to determine if the dataf
 
 | ID  | Country |
 | ------------- | ------------- |
-| Content Cell  | 
-| Content Cell  | 
+1| Algeria |
+2| Angola |
+3| Bahrain |
+4| Benin |
+5| Botswana |
+6| Burkina Faso |
+7| Burundi |
+8| Cameroon |
+9| Central African Republic |
+10| Chad |
+11| Comoros |
+12| Congo |
+13| Congo, DRC |
+14| Cote d'Ivoire |
+15| Djibouti |
+16| Egypt |
+17| Egypt (United Arab Republic) |
+18| Equatorial Guinea |
+19| Eritrea |
+20| Ethiopia |
+21| Gabon |
+22| Ghana |
+23| Guinea |
+24| Guinea-Bissau |
+25| Israel |
+26| Jordan |
+27| Kenya |
+28| Kuwait |
+29| Lesotho |
+30| Liberia |
+31| Libya 
+32| Madagascar |
+33| Malawi |
+34| Mali |
+35| Mali Federation |
+36| Mauritania |
+37| Morocco |
+38| Mozambique |
+39| Namibia |
+40| Niger |
+41| Nigeria |
+42| Oman |
+43| Qatar |
+44| Rwanda |
+45| Sao Tome and Principe |
+46| Saudi Arabia |
+47| Senegal |
+48| Seychelles |
+49| Sierra Leone |
+50| Somalia |
+51| South Africa |
+52| South Sudan |
+53| Sudan |
+54| Swaziland |
+55| Tanzania |
+56| The Gambia |
+57| Togo |
+58| Tunisia |
+59| Uganda |
+60| United Arab Emirates |
+61| Yemen |
+62| Yemen Arab Republic |
+63| Yemen People's Republic |
+64| Zambia |
+65| Zanzibar |
+66| Zimbabwe |
 
 Countries you can select to perturb: 
 
