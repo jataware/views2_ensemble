@@ -11,7 +11,7 @@ Hegre, Håvard, Marie Allansson, Matthias Basedau, Michael Colaresi, Mihai Croic
 Github: https://github.com/UppsalaConflictDataProgram/OpenViEWS2
 
 
-## Use Case:
+## CLI Use Case:
 
 The user will run the docker container with any parameters they want to perturb.This will run the ensemble with no perturbation and return the prediction for the months 493 to 530. This hypothical result might look like the output below:
 
@@ -101,6 +101,7 @@ After the models/data are downloaded we activate the views2 environment in our d
 The script looks for any parameters passed by the user to determine if the dataframe needs to be perturbed before a prediction is made. The parameters we exposed are:
 -   --start_date: prediction start.
 -   --end_date: prediction end.
+- --country: if country is defined only the country passed to the ensemble will be perturbed before prediction.
 - --gdp_pcap: a percentage perturbation against gpd per capita (wdi_ny_gdp_pcap_pp_kd) where 0 is baseline (no perturbation)
 - --infant_mortality: a percentage perturbation against annual infant mortality rate (wdi_sp_dyn_imrt_in) where 0 is baseline (no perturbation)
 - -Liberal Democracy Index:  
