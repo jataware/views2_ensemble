@@ -106,7 +106,10 @@ The script looks for any parameters passed by the user to determine if the dataf
 - --infant_mortality: a percentage perturbation against annual infant mortality rate (wdi_sp_dyn_imrt_in) where 0 is baseline (no perturbation)
 - -Liberal Democracy Index:  
 
-Countries available to perturb. Will update this list with final output results. 
+Countries available to perturb. 
+ "choices": ["Ethiopia", "Sudan", "South Sudan", "Kenya", "Egypt","Libya","Saudi Arabia", "Somalia", "Eritrea , "Chad", "Central African Republic", "Uganda"]
+
+Will update this list later since all options for the data are below. 
 
 | ID  | Country |
 | ------------- | ------------- |
