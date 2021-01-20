@@ -1,184 +1,125 @@
 # ViEWS2 Ensemble
 
- **Overview**  This repo provides a machine learning ensemble to predict state based violence throughout Africa. The ensemble uses data from a variety of open sources that has been organized into a large dataframe provided by the ViEWS team. The model predicts probability of violence 3 years into the future and should be retrained about very few months for the most accurate predictions. 
+## Overview
+This repo implements a version of the [Violence Early-Warning System (ViEWS)](https://www.pcr.uu.se/research/views/), developed by [Uppsala University's Department of Peace and Conflict Research](https://www.pcr.uu.se/?languageId=1). Building on the [open source work](https://github.com/UppsalaConflictDataProgram/OpenViEWS2) of the ViEWS team, we provide a machine learning based ensemble model to predict state based violence throughout Africa. The ensemble uses a variety of open source data that has been organized collated by the ViEWS team into a single, large data frame. The model predicts probability of violence 3 years into the future and should be retrained using updated data every few months to ensure the most accurate predictions. 
  
-This ensemble is exposed by a command line interface which allows users to manipulate  input data before running the pre-trained ensemble to predict future violence in a given country.
+This ensemble model is exposed via a command line interface (CLI) which allows a modeler to perturb key model parameters prior to executing the pre-trained ensemble to predict future violence in a given country.
 
- **Citation**: 
+> **Citation**: 
 ViEWS:
 Hegre, Håvard, Marie Allansson, Matthias Basedau, Michael Colaresi, Mihai Croicu, Hanne Fjelde, Frederick Hoyles, Lisa Hultman, Stina Högbladh, Naima Mouhleb, Sayeed Auwn Muhammad, Desiree Nilsson, Håvard Mokleiv Nygård, Gudlaug Olafsdottir, Kristina Petrova, David Randahl, Espen Geelmuyden Rød, Nina von Uexkull, Jonas Vestby (2019) ‘ViEWS: A political violence early-warning system’, _Journal of Peace Research_, 56(2), pp. 155–174. doi: [10.1177/0022343319823860](https://doi.org/10.1177/0022343319823860).
 
-Github: https://github.com/UppsalaConflictDataProgram/OpenViEWS2
+> **Github**: [https://github.com/UppsalaConflictDataProgram/OpenViEWS2](https://github.com/UppsalaConflictDataProgram/OpenViEWS2)
 
 
-## CLI Use Case:
+## Usage
 
-The user will run the docker container with any parameters they want to perturb.This will run the ensemble with no perturbation and return the prediction for the months 493 to 530. This hypothical result might look like the output below:
+First, you should pull the `views2_ensemble` Docker container with:
 
-    docker run views2_ensemble "--state_date 493" "--end_date 530" 
+```
+docker pull marshhawk4/views2_ensemble
+```
 
-**![](https://lh3.googleusercontent.com/0YQ2LUaG_6dILZHFpot8EXdrcRPhCLQy7ay7_XZP-v92-24jZdoS0yrEcNwJnor9IFQ60RSJybc1cmkCJwAe7WCUH3C1bAeyQZzuhjLzNuYDcIgGITe6JQNCZVdSHNXs0utmNDcy6tw)
-**
+You may now execute the ViEWS ensemble via Docker, by passing the model container parameters that they want to perturb. The following example command will run the ensemble with no parameter perturbation and return a prediction for the months 493 to 530. This hypothical result might look like the output below:
+
+```
+docker run views2_ensemble "--state_date 493" "--end_date 530"
+```
+
+![](https://lh3.googleusercontent.com/0YQ2LUaG_6dILZHFpot8EXdrcRPhCLQy7ay7_XZP-v92-24jZdoS0yrEcNwJnor9IFQ60RSJybc1cmkCJwAe7WCUH3C1bAeyQZzuhjLzNuYDcIgGITe6JQNCZVdSHNXs0utmNDcy6tw)
 
 
-In this example we are decreasing gdp per capital by 25%, increasing infant mortality by 15% and decreasing liberal democracy index by 15 percent. The output shows a few countries with much high risk of violence over the next 3 years. Now with perturbing the data: 
+By reducing gdp per capita by 25%, increasing infant mortality by 15% and decreasing liberal democracy index by 15 percent we can see that several African countries now have an increased risk of violence over the next 3 years:
 
-    docker run views2_ensemble "--state_date 493" "--end_date 530" "--gdp_pcap -.25"  "--infant_mortality -.15"  " --liberalDemocracyIndex -.15"
+```
+docker run views2_ensemble "--state_date 493" "--end_date 530" "--gdp_pcap -.25"  "--infant_mortality -.15"  " --liberalDemocracyIndex -.15"
+```
 
-
-
-**
 ![](https://lh6.googleusercontent.com/_262PTlql9C8YdV84-Gy-jsJwErvd9u0yf1z1H_cFM2RM7qB9q_KoWIGBaO14A7semciunHmA73YILeJn0tA8uW2yClg1AxMpqoO6VU08iGbhPk-EbZXakUmAyYy6DMbhwf4mlTLYhQ)
-**
 
-# **I. Ensemble Inputs**
- **Open Source Data**:
- The data used in the models can be found at these databases:
 
-All columns or features in the dataframe are prefaced by which database they originally came from. Below are the prefix and associated data sources for all the features used in this ensemble.
+## Inputs
+
+The data used in the ensemble model is open source and can be found in the following databases:
+
+> **Note:** all columns or features in the dataframe expected by the ensemble model are prefixed by their source database. For example `Acled_` prefixed columns indicate data that is from [ACLED](https://acleddata.com/resources/general-guides/#1603120929158-3f359ee4-4726). Below are the prefix and associated data sources for all the features used in this ensemble.
   
-Fvp:
-Columns prefixed prop_ are from EPR, see [https://icr.ethz.ch/data/epr](https://icr.ethz.ch/data/epr/)/
-Columns prefix ssp2 are from SSP, see [https://tntcat.iiasa.ac.at/SspDb/](https://tntcat.iiasa.ac.at/SspDb/)
-Auto, demo, electoral, etc are from VDEM, see [https://www.v-dem.net/en/](https://www.v-dem.net/en/)
+1. **Fvp**:
+This combines multiple databases; columns prefixed `prop_` are from [EPR](https://icr.ethz.ch/data/epr). Columns prefixed `ssp2` are from [SSP](https://tntcat.iiasa.ac.at/SspDb/) and auto, demo, electoral, etc are from [VDEM](https://www.v-dem.net/en/)
+2. **Reign**:
+[Rulers, Elections, and Irregular Governance dataset](https://oefdatascience.github.io/REIGN.github.io/menu/REIGN_CODEBOOK.html)
+3. **Acled_**:
+[The Armed Conflict Location & Event Data Project](https://acleddata.com/resources/general-guides/#1603120929158-3f359ee4-4726)
+4. **Ged_**:
+[UCDP Georeferenced Event Dataset](https://ucdp.uu.se/downloads/)
+5. **Icgcw**:
+[CrisisWatch](https://www.crisisgroup.org/crisiswatch)
+6. **vdem_**:
+[Varieties of Democracy](https://www.v-dem.net/media/filer_public/28/14/28140582-43d6-4940-948f-a2df84a31893/v-dem_codebook_v10.pdf)
+7. **Wdi_**:
+[World Development Indicators](https://databank.worldbank.org/source/world-development-indicators)
 
-Reign:
-[https://oefdatascience.github.io/REIGN.github.io/menu/REIGN_CODEBOOK.html](https://oefdatascience.github.io/REIGN.github.io/menu/REIGN_CODEBOOK.html)
+## Models
+There are 14 models used in this ensemble. They all predict state based violence for a given country month. The `cm` stands for country month, the `sb` stands for state based violence. Each model has its own feature with some overlapping features between models within the ensemble. 
 
-Acled_:
-[https://acleddata.com/resources/general-guides/#1603120929158-3f359ee4-4726](https://acleddata.com/resources/general-guides/#1603120929158-3f359ee4-4726)
+ 1. `cm_sb_acled_violence`
+ 2. `cm_sb_cflong`
+ 3. `cm_sb_neibhist`
+ 4. `cm_sb_cdummies`
+ 5. `cm_sb_acled_protest`
+ 6. `cm_sb_reign_coups`
+ 7. `cm_sb_icgcw`
+ 8. `cm_sb_reign_drought`
+ 9. `cm_sb_reign_global`
+ 10. `cm_sb_vdem_global`
+ 11. `cm_sb_demog`
+ 12. `cm_sb_wdi_global`
+ 13. `cm_sb_all_global`
+ 14. `cm_sbonset24_25_all`
 
-Ged_:
-[https://ucdp.uu.se/downloads/](https://ucdp.uu.se/downloads/)
+## The ViEWS framework
+The ViEWS framework can be found on [Github](https://github.com/UppsalaConflictDataProgram/OpenViEWS2). The ViEWS team are experts on predicting violence using machine learning and open sourced this framework for anyone to use for modeling state based conflict.  
 
-Icgcw:
-[https://www.crisisgroup.org/crisiswatch](https://www.crisisgroup.org/crisiswatch)
+For more information on how the ViEWS framework is set up and how to get started, refer to their [detailed documenation](https://views.pcr.uu.se/download/docs/views.pdf).
 
-vdem_:
-[https://www.v-dem.net/media/filer_public/28/14/28140582-43d6-4940-948f-a2df84a31893/v-dem_codebook_v10.pdf](https://www.v-dem.net/media/filer_public/28/14/28140582-43d6-4940-948f-a2df84a31893/v-dem_codebook_v10.pdf)
+Though the ViEWS framework allows modelers to generate their own models, we decided to implement an ensemble of the ViEWS' team standard models which are used for their monthly, public predictions for areas around the world. An example of monthly prediction report can be found [here](http://files.webb.uu.se/uploader/1576/ViEWS-Reports--53-.pdf).
 
-Wdi_:
-[https://databank.worldbank.org/source/world-development-indicators](https://databank.worldbank.org/source/world-development-indicators)
+## The ensemble workflow
+In our workflow, each of the 14 models within the ensemble runs indepdently to generate its own prediction. These predictions are combined to generate a composite prediction. 
 
- **The Models**:
- There are 14 models used in this ensemble. They all predict state based violence for a given country month. The cm stands for country month, the sb stands for state based violence. Each model has its own feature with a few features overlapping between models. 
+The workflow for training this ensemble is neither quick nor simple due to large space and memory requirements needed to run all 14 models. In total, all the data and cached models are ~70GB. Our goal was to Dockerize a pre-trained version of this ensemble to minimize end-user effort and computation, while offering a reasonable degree of flexibility around perturbing a key set of input parameters. 
 
- 1. "cm_sb_acled_violence"
- 2. "cm_sb_cflong"
- 3.  "cm_sb_neibhist"
- 4. "cm_sb_cdummies"
- 5. "cm_sb_acled_protest"
- 6.  "cm_sb_reign_coups"
- 7. "cm_sb_icgcw"
- 8. "cm_sb_reign_drought"
- 9.  "cm_sb_reign_global"
- 10. "cm_sb_vdem_global"
- 11.  "cm_sb_demog"
- 12. "cm_sb_wdi_global"
- 13. "cm_sb_all_global" 
- 14.  "cm_sbonset24_25_all"
+### Dockerization
+Originally we attempted to save the 14 pre-trained models directly in the Docker image so they would always be available for any user who `docker pulls` the container. Unfortunately, the Docker image including all models and data is 83GB and is impractical for storage on a common Docker registry such as DockerHub. To mitigate this issue we store the pre-trained models and data in an Amazon S3 Bucket; these are copied to the ready Docker container prior to each model run. 
 
-## Getting to know the ViEWS framework
-The ViEWS framework can be found on github and downloaded [here](https://github.com/UppsalaConflictDataProgram/OpenViEWS2). The views team are experts on predicting violence using machine learning and have put together this framework for anybody to use.  
+After the models/data are downloaded we activate the `views2` environment in our Docker container and run the `sb_ensemble_script.py` script to run the ensemble model.
 
-For more information on how the ViEWS framework is set up and how to get started you can see the additional documentation [here](https://views.pcr.uu.se/download/docs/views.pdf).
+### Model parameters
+The model allows the user to make parameter selections prior to the model run. These are:
 
-Even with the option of creating our own models, we decided to rebuild their standard models that are used in their monthly predictions for areas around the world. An example of one of these monthly predictions can be send here.
+looks for any parameters passed by the user to determine if the dataframe needs to be perturbed before a prediction is made. The parameters we exposed are:
 
-## How the ensemble works
+- `--start_date`: prediction start.
+- `--end_date`: prediction end.
+- `--country`: if country is defined only the country passed to the ensemble will be perturbed before prediction, otherwise all countries are modeled.
+- `--gdp_pcap`: a percentage perturbation against gpd per capita (`wdi_ny_gdp_pcap_pp_kd`) where 0 is baseline (no perturbation)
+- `--infant_mortality`: a percentage perturbation against annual infant mortality rate (`wdi_sp_dyn_imrt_in`) where 0 is baseline (no perturbation)
+- `--liberalDemocracyIndex`: a percentage perturbation against liberal democracy index where 0 is baseline (no perturbation)
+- `foodProdIndex`: a percentage perturbation against the food production index where 0 is baseline (no perturbation).
 
-To make a prediction with the ensemble each model needs to make it's own prediction. 
+#### Parameterization by country
 
-## Jataware's Workflow
-The workflow for this ensemble is not quick or simple due to the requirements of all 14 models. In total all the data and saved models add up to around 70GB. Our goal was to dockerize the ensemble and expose parameters so the user can perturb the data to create novel scenarios and see how predictions of state based violence might change. 
+Only a subset of countries may have their parameters perturbed. They are:
 
-**Dockerization:** 
-We started with trying to save the models in the docker image so it could be always their when the user run the ensemble. This didn't work however due to the large size of the image at 83GB. To get around this problem we decided to store the pre-trained models and data in an Amazon S3 Bucket which we download before each run. 
-
-After the models/data are downloaded we activate the views2 environment in our docker container and run our script to run the ensemble.
-
-**Exposed Parameters:** 
-The script looks for any parameters passed by the user to determine if the dataframe needs to be perturbed before a prediction is made. The parameters we exposed are:
--   --start_date: prediction start.
--   --end_date: prediction end.
-- --country: if country is defined only the country passed to the ensemble will be perturbed before prediction.
-- --gdp_pcap: a percentage perturbation against gpd per capita (wdi_ny_gdp_pcap_pp_kd) where 0 is baseline (no perturbation)
-- --infant_mortality: a percentage perturbation against annual infant mortality rate (wdi_sp_dyn_imrt_in) where 0 is baseline (no perturbation)
-- -Liberal Democracy Index:  
-
-Countries available to perturb. 
- "choices": ["Ethiopia", "Sudan", "South Sudan", "Kenya", "Egypt","Libya","Saudi Arabia", "Somalia", "Eritrea , "Chad", "Central African Republic", "Uganda"]
-
-Will update this list later since all options for the data are below. 
-
-| ID  | Country |
-| ------------- | ------------- |
-1| Algeria |
-2| Angola |
-3| Bahrain |
-4| Benin |
-5| Botswana |
-6| Burkina Faso |
-7| Burundi |
-8| Cameroon |
-9| Central African Republic |
-10| Chad |
-11| Comoros |
-12| Congo |
-13| Congo, DRC |
-14| Cote d'Ivoire |
-15| Djibouti |
-16| Egypt |
-17| Egypt (United Arab Republic) |
-18| Equatorial Guinea |
-19| Eritrea |
-20| Ethiopia |
-21| Gabon |
-22| Ghana |
-23| Guinea |
-24| Guinea-Bissau |
-25| Israel |
-26| Jordan |
-27| Kenya |
-28| Kuwait |
-29| Lesotho |
-30| Liberia |
-31| Libya 
-32| Madagascar |
-33| Malawi |
-34| Mali |
-35| Mali Federation |
-36| Mauritania |
-37| Morocco |
-38| Mozambique |
-39| Namibia |
-40| Niger |
-41| Nigeria |
-42| Oman |
-43| Qatar |
-44| Rwanda |
-45| Sao Tome and Principe |
-46| Saudi Arabia |
-47| Senegal |
-48| Seychelles |
-49| Sierra Leone |
-50| Somalia |
-51| South Africa |
-52| South Sudan |
-53| Sudan |
-54| Swaziland |
-55| Tanzania |
-56| The Gambia |
-57| Togo |
-58| Tunisia |
-59| Uganda |
-60| United Arab Emirates |
-61| Yemen |
-62| Yemen Arab Republic |
-63| Yemen People's Republic |
-64| Zambia |
-65| Zanzibar |
-66| Zimbabwe |
-
-
-
+* Ethiopia
+* Sudan
+* South Sudan
+* Kenya
+* Egypt
+* Libya
+* Saudi Arabia
+* Somalia
+* Eritrea
+* Chad
+* Central African Republic
+* Uganda
