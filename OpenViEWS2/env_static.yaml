@@ -1,4 +1,4 @@
-name: views2
+name: base
 channels:
   - defaults
 dependencies:

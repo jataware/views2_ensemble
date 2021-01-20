@@ -31,6 +31,11 @@ from views.apps.pipeline.models_cm import all_cm_models_by_name
 from views.apps.pipeline.models_pgm import all_pgm_models_by_name
 from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
 
+nameofcsv = "storage/predictions/views_sb_ensemble_script_start=" + str(args.start_date) +"_end="+str(args.end_date)+ ".csv"
+print('csv_name', nameofcsv)
+
+
+
 #logging errors
 logging.basicConfig(
     level=logging.DEBUG,
@@ -146,9 +151,13 @@ if int(args.end_date) > int(max(period_c.times_predict)):
 time_p = createList(int(args.start_date), int(args.end_date))
 
 results = df_results.loc[time_p]
-
-nameofcsv_test = "storage/predictions/views_sb_ensemble_script_start=" + str(args.start_date) +"_end="+str(args.end_date) +"_currentTime="+ str(datetime.datetime.now()) + ".csv"
-results.to_csv(nameofcsv_test)
+print("results")
+results.head()
+print('tail')
+results.tail()
+nameofcsv = "storage/predictions/views_sb_ensemble_script_start=" + str(args.start_date) +"_end="+str(args.end_date)+ ".csv"
+print('csv_name', nameofcsv)
+results.to_csv(nameofcsv)
 
 
 if __name__ == "__main__":
