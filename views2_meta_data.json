@@ -1,0 +1,50 @@
+{
+  "name": "ViEWS2 Ensemble (state based violence)",
+  "version": "0.1",
+  "description": "An ensemble of 14 models that predict state based violence in Africa by country month",
+  "status": "current",
+  "category": ["agent-based model", "random forest ensemble - state based violence"],
+ "image": "localhost:5000/views2_sb_ensemble",
+  "maintainer": {},
+  "parameters": [
+    {
+      "name": "start_date",
+      "description": "Subset prediction by the start month (number of months after Jan 1980)",
+      "type": "int",
+      "min": 490,
+      "max": 526,
+      "default": 490,
+      "tags": []
+    },
+    {
+      "name": "end_date",
+      "description": "Subset prediction by the end month (number of months after Jan 1980)",
+      "type": "int",
+      "min": 491,
+      "max": 527,
+      "default": 527,
+      "tags": []
+    }
+  ],
+  "outputs": [
+    [
+      {
+        "name": "month_id",
+        "type": "int"
+      },
+      {
+        "name": "country_id",
+        "type": "int"
+      },
+      {
+        "name": "sc_cflong_acled_violence_ensemble",
+        "description": "Probability of state based violence in each country by month",
+        "type": "float",
+        "units": "percentage",
+        "units_description": "Percentage probability",
+        "tags": []
+      }
+    ]
+  ],
+  "tags": ["supermaas::ui::decision-type::applied-research"]
+}
