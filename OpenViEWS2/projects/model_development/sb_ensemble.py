@@ -2,11 +2,13 @@ import datetime
 import json
 import logging
 import views
+
+from dateutil import relativedelta
 import argparse
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--start_date', default="483")
-parser.add_argument('--end_date', default="520")
+parser.add_argument('--start_date', default="2020-09")
+parser.add_argument('--end_date', default="2023-10")
 parser.add_argument('--country', default= "All", help='country name')
 parser.add_argument('--gdp_pcap', default="0")
 parser.add_argument('--infant_mortality', default="0")
@@ -46,15 +48,31 @@ logging.basicConfig(
     format=views.config.LOGFMT,
 )
 
+#covert times
+date1 = datetime.datetime.strptime(str('1980-01'), '%Y-%m')
+start_str = datetime.datetime.strptime(str(args.start_date), '%Y-%m')
+end_str = datetime.datetime.strptime(str(args.end_date), '%Y-%m')
+
+def convertDate(date1980, date2):
+    r = relativedelta.relativedelta(date2, date1980)
+    print(r.years * 12)
+    print(r.months)
+    final_date = r.years * 12 + r.months + 1
+    return final_date
+
+start_date = convertDate(date1, start_str)
+end_date = convertDate(date1, end_str)
+print('start', start_date)
+print('end', end_date)
 
 #get periods
-run_id = "d_2020_10_01_prelim"
+run_id = "d_2020_09_01_prelim"
 periods = get_periods(run_id) # as a list
 periods_by_name = get_periods_by_name(run_id)# as a dict
 period_a = periods_by_name["A"]
 period_b = periods_by_name["B"]
 period_c = periods_by_name["C"]
-
+print(period_c)
 
 #bring in dataset
 dataset = views.DATASETS["cm_africa_imp_0"]
@@ -315,19 +333,19 @@ def createList(r1, r2):
     return list(range(r1, r2+1))
 
 
-if int(args.start_date) < int(period_c.times_predict[0]):
-    args.start_date = period_c.times_predict[0]
-elif int(args.start_date) > int(max(period_c.times_predict)):
-    args.start_date = int(max(period_c.times_predict))
+if int(start_date) < int(period_c.times_predict[0]):
+    start_date = period_c.times_predict[0]
+elif int(start_date) > int(max(period_c.times_predict)):
+    start_date = int(max(period_c.times_predict))
 
-if int(args.end_date) < int(args.start_date):
-    args.end_date = int(args.start_date) + 1
-if int(args.end_date) > int(max(period_c.times_predict)):
-    args.end_date = max(period_c.times_predict)
+if int(end_date) < int(args.start_date):
+    end_date = int(args.start_date) + 1
+if int(end_date) > int(max(period_c.times_predict)):
+    end_date = max(period_c.times_predict)
 
 
 
-time_p = createList(int(args.start_date), int(args.end_date))
+time_p = createList(int(start_date), int(end_date))
 print(time_p)
 results = df_results.loc[time_p]
 

@@ -13,4 +13,4 @@ ENV PATH /opt/conda/envs/views2/bin:$PATH
 
 
 ENTRYPOINT ["python3", "projects/model_development/sb_ensemble.py"]
-CMD ["--start_date 483", "--end_date 520", '--country "All"' , "--gdp_pcap 0", "--infant_mortality 0" , "--liberalDemocracyIndex 0", "--foodProdIndex 0" ]
+CMD ["--start_date '2020-10'", "--end_date '2023-11'", '--country "All"' , "--gdp_pcap 0", "--infant_mortality 0" , "--liberalDemocracyIndex 0", "--foodProdIndex 0" ]
