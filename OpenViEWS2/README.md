@@ -1,6 +1,62 @@
 # ViEWS2
+## **I: Simple start**
+To run the views ensemble with pretrained models please follow these directions.
 
-Getting started
+ 1. First clone the repo:
+
+  
+		git clone https://github.com/jataware/views2_ensemble.git 
+
+       
+2. Make sure you have docker installed on your computer. This was tested on linux ubuntu 18.04. Download and install docker.
+3.  Once conda is installed and the repo is downloaded it's time to pull the views2 docker image. You can do this in the terminal by running 
+
+		 docker pull jataware/views2_ensemble:tagname
+Now navigate to the OpenViEWS2 directory and fetch the prebuilt models. This will take a long time so be patient. We tested this on an AWS server which speed this process up a lot:
+
+       cd OpenViEWS2/
+       mkdir results
+	   python fetch_data_models.py
+	  
+Now you should have the models and data stored locally and you can run the model with the command:
+
+	    docker run -v $PWD/storage:/usr/local/src/Views_dir/storage/ -v $PWD/results:/usr/local/src/Views_dir/storage/predictions/ views2_ensemble --start_date 2020-10 --end_date 2023-11
+
+The -v are the volumes that allow the docker container to have access the the models and data you just downloaded locally. The /results directory we created earlier will be connected to the predictions folder in the docker container so we have access to the predictions after the ensemble is done predicting. 
+
+
+**Exposed Parameters:** The script looks for any parameters passed by the user to determine if the dataframe needs to be perturbed before a prediction is made. Min and max percentage changes are -1 and 1 which means the values can be decreased or increased by 100%. The parameters we exposed are:
+
+-   --start_date: prediction start. Default is 2020-10( Min: 2020-10, Max: 2023-10)
+-   --end_date: prediction end. Default is 2023-11(Min: 2020-11, Max: 2023-11)
+-   --country: if country is defined only the country passed to the ensemble will be perturbed before prediction. There are a list of countries supported below. If no country is specified all countries in Africa will be perturbed the same amount for all parameters. 
+-   --gdp_pcap: a percentage perturbation against gpd per capita (wdi_ny_gdp_pcap_pp_kd) where 0 is baseline (Min = -1, Max 1)
+-   --infant_mortality: a percentage perturbation against annual infant mortality rate (wdi_sp_dyn_imrt_in) where 0 is baseline (Min = -1, Max 1)
+-   --liberalDemocracyIndex: a percentage perturbation against liberal democracy index.(Min = -1, Max 1)
+-   --foodProdIndex: a percentage perturbation against total food production index.(Min = -1, Max 1)
+
+#### Parameterization by country
+
+Only a subset of countries may have their parameters perturbed. They are:
+
+-   Ethiopia
+-   Sudan
+-   South Sudan
+-   Kenya
+-   Egypt
+-   Libya
+-   Saudi Arabia
+-   Somalia
+-   Eritrea
+-   Chad
+-   Central African Republic
+-   Uganda
+
+If you just wanted to run the ensemble with exposed parameters don't continue. Below is for building the models locally instead of downloading pretrained models. 
+
+## **II: Getting started with building models locally**
+Getting started with building models locally.
+Clone this repo.
 
 Download and install miniconda3: https://docs.conda.io/en/latest/miniconda.html
 After you have conda installed, in your terminal run
@@ -165,6 +221,7 @@ d. Period C trains on all data up to last month of data. Then it predicts from t
 
 16. This will build the models. It will take a long time because there are 14 models to build and there is a lot of data. Once the models have been built we can zip up the storage folder and push it to s3.
 
+## For updating models in S3 *Ignore if not part of jataware or world modelers.
 ## Upload models and new data to s3
 	
 This part is pretty simple. 
@@ -173,9 +230,9 @@ This part is pretty simple.
 
 	    cd /OpenViEWS2/storage/
 		zip -r ../storage.zip .
-2. Now we have our zipped data and models. We can use the upload_to_s3.py script for that.
+2. Now we have our zipped data and models. We can use the upload_to_s3.py script for that. You will need to add the access keys to the script for this to work.
 				
 
 		   python ~/views2_ensemble_updated/OpenViEWS2/projects/model_development/upload_to_s3.py
 		
-3. 
+The models should now be in s3. 

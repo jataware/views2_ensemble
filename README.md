@@ -12,30 +12,43 @@ Hegre, Håvard, Marie Allansson, Matthias Basedau, Michael Colaresi, Mihai Croic
 > **Github**: [https://github.com/UppsalaConflictDataProgram/OpenViEWS2](https://github.com/UppsalaConflictDataProgram/OpenViEWS2)
 
 
-## Usage
+# **Usage**
 
-First, you should pull the `views2_ensemble` Docker container with:
+ **Options**:
+ There are three different ways to run this ensemble. 
+ 
+  **I**: The first method is locally, which is explained in detail [here (readme)](https://github.com/jataware/views2_ensemble/blob/main/OpenViEWS2/README.md). 
+ 
+ Process:
+ 
+1. Clone git repo
 
-```
-docker pull marshhawk4/views2_ensemble
-```
+2. Pull docker image
 
-You may now execute the ViEWS ensemble via Docker, by passing the model container parameters that they want to perturb. The following example command will run the ensemble with no parameter perturbation and return a prediction for the months 493 to 530. This hypothical result might look like the output below:
+3. Fetch pretrained models and data
 
-```
-docker run views2_ensemble "--state_date 493" "--end_date 530"
-```
+4. Run docker image with parameters perturbed or not.
 
-![](https://lh3.googleusercontent.com/0YQ2LUaG_6dILZHFpot8EXdrcRPhCLQy7ay7_XZP-v92-24jZdoS0yrEcNwJnor9IFQ60RSJybc1cmkCJwAe7WCUH3C1bAeyQZzuhjLzNuYDcIgGITe6JQNCZVdSHNXs0utmNDcy6tw)
+5. See results from model in results folder. 
 
+ **II**: The second method is also run locally, but you build the models yourself with the latest data available. explained in detail after the first method [here (readme)](https://github.com/jataware/views2_ensemble/blob/main/OpenViEWS2/README.md). 
 
-By reducing gdp per capita by 25%, increasing infant mortality by 15% and decreasing liberal democracy index by 15 percent we can see that several African countries now have an increased risk of violence over the next 3 years:
+Process:
 
-```
-docker run views2_ensemble "--state_date 493" "--end_date 530" "--gdp_pcap -.25"  "--infant_mortality -.15"  " --liberalDemocracyIndex -.15"
-```
+ 1. Clone git repo
 
-![](https://lh6.googleusercontent.com/_262PTlql9C8YdV84-Gy-jsJwErvd9u0yf1z1H_cFM2RM7qB9q_KoWIGBaO14A7semciunHmA73YILeJn0tA8uW2yClg1AxMpqoO6VU08iGbhPk-EbZXakUmAyYy6DMbhwf4mlTLYhQ)
+ 2. Pull docker image
+
+ 3. Fetch latest data from source
+
+ 4. Build the models locally
+
+ 5. Run docker image with parameters perturbed or not.
+
+ 6. See results from model in results folder. 
+ 
+
+ **III**: The third method is through the world modeler's supermaas framework. That process is not available to the public yet so I will not explain that process here. To learn more about world modelers you can read the summary here:  https://www.darpa.mil/program/world-modelers.
 
 
 ## Inputs
@@ -92,7 +105,7 @@ The workflow for training this ensemble is neither quick nor simple due to large
 ### Dockerization
 Originally we attempted to save the 14 pre-trained models directly in the Docker image so they would always be available for any user who `docker pulls` the container. Unfortunately, the Docker image including all models and data is 83GB and is impractical for storage on a common Docker registry such as DockerHub. To mitigate this issue we store the pre-trained models and data in an Amazon S3 Bucket; these are copied to the ready Docker container prior to each model run. 
 
-After the models/data are downloaded we activate the `views2` environment in our Docker container and run the `sb_ensemble_script.py` script to run the ensemble model.
+After the models/data are downloaded we activate the `views2` environment in our Docker container and run the `sb_ensemble.py` script to run the ensemble model.
 
 ### Model parameters
 The model allows the user to make parameter selections prior to the model run. These are:
@@ -105,7 +118,7 @@ looks for any parameters passed by the user to determine if the dataframe needs 
 - `--gdp_pcap`: a percentage perturbation against gpd per capita (`wdi_ny_gdp_pcap_pp_kd`) where 0 is baseline (no perturbation)
 - `--infant_mortality`: a percentage perturbation against annual infant mortality rate (`wdi_sp_dyn_imrt_in`) where 0 is baseline (no perturbation)
 - `--liberalDemocracyIndex`: a percentage perturbation against liberal democracy index where 0 is baseline (no perturbation)
-- `foodProdIndex`: a percentage perturbation against the food production index where 0 is baseline (no perturbation).
+- `--foodProdIndex`: a percentage perturbation against the food production index where 0 is baseline (no perturbation).
 
 #### Parameterization by country
 
