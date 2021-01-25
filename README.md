@@ -105,7 +105,7 @@ The workflow for training this ensemble is neither quick nor simple due to large
 ### Dockerization
 Originally we attempted to save the 14 pre-trained models directly in the Docker image so they would always be available for any user who `docker pulls` the container. Unfortunately, the Docker image including all models and data is 83GB and is impractical for storage on a common Docker registry such as DockerHub. To mitigate this issue we store the pre-trained models and data in an Amazon S3 Bucket; these are copied to the ready Docker container prior to each model run. 
 
-After the models/data are downloaded we activate the `views2` environment in our Docker container and run the `sb_ensemble_script.py` script to run the ensemble model.
+After the models/data are downloaded we activate the `views2` environment in our Docker container and run the `sb_ensemble.py` script to run the ensemble model.
 
 ### Model parameters
 The model allows the user to make parameter selections prior to the model run. These are:
@@ -118,7 +118,7 @@ looks for any parameters passed by the user to determine if the dataframe needs 
 - `--gdp_pcap`: a percentage perturbation against gpd per capita (`wdi_ny_gdp_pcap_pp_kd`) where 0 is baseline (no perturbation)
 - `--infant_mortality`: a percentage perturbation against annual infant mortality rate (`wdi_sp_dyn_imrt_in`) where 0 is baseline (no perturbation)
 - `--liberalDemocracyIndex`: a percentage perturbation against liberal democracy index where 0 is baseline (no perturbation)
-- `foodProdIndex`: a percentage perturbation against the food production index where 0 is baseline (no perturbation).
+- `--foodProdIndex`: a percentage perturbation against the food production index where 0 is baseline (no perturbation).
 
 #### Parameterization by country
 
