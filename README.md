@@ -12,30 +12,29 @@ Hegre, Håvard, Marie Allansson, Matthias Basedau, Michael Colaresi, Mihai Croic
 > **Github**: [https://github.com/UppsalaConflictDataProgram/OpenViEWS2](https://github.com/UppsalaConflictDataProgram/OpenViEWS2)
 
 
-## Usage
+# **Usage**
 
-First, you should pull the `views2_ensemble` Docker container with:
+ **Options**:
+ There are three different ways to run this ensemble. 
+ 
+ The first method is locally, which is explained in detail [here (readme)](https://github.com/jataware/views2_ensemble/blob/main/OpenViEWS2/README.md). 
+	 Process:
+		 1. Clone git repo
+		 2. Pull docker image
+		 3. Fetch pretrained models and data
+		 4. Run docker image with parameters perturbed or not.
+		 5. See results from model in results folder. 
 
-```
-docker pull marshhawk4/views2_ensemble
-```
+The second method is also run locally, but you build the models yourself with the latest data available. explained in detail after the first method [here (readme)](https://github.com/jataware/views2_ensemble/blob/main/OpenViEWS2/README.md). 
+	 Process:
+		 1. Clone git repo
+		 2. Pull docker image
+		 3. Fetch latest data from source
+		 4. Build the models locally
+		 5. Run docker image with parameters perturbed or not.
+		 6. See results from model in results folder. 
 
-You may now execute the ViEWS ensemble via Docker, by passing the model container parameters that they want to perturb. The following example command will run the ensemble with no parameter perturbation and return a prediction for the months 493 to 530. This hypothical result might look like the output below:
-
-```
-docker run views2_ensemble "--state_date 493" "--end_date 530"
-```
-
-![](https://lh3.googleusercontent.com/0YQ2LUaG_6dILZHFpot8EXdrcRPhCLQy7ay7_XZP-v92-24jZdoS0yrEcNwJnor9IFQ60RSJybc1cmkCJwAe7WCUH3C1bAeyQZzuhjLzNuYDcIgGITe6JQNCZVdSHNXs0utmNDcy6tw)
-
-
-By reducing gdp per capita by 25%, increasing infant mortality by 15% and decreasing liberal democracy index by 15 percent we can see that several African countries now have an increased risk of violence over the next 3 years:
-
-```
-docker run views2_ensemble "--state_date 493" "--end_date 530" "--gdp_pcap -.25"  "--infant_mortality -.15"  " --liberalDemocracyIndex -.15"
-```
-
-![](https://lh6.googleusercontent.com/_262PTlql9C8YdV84-Gy-jsJwErvd9u0yf1z1H_cFM2RM7qB9q_KoWIGBaO14A7semciunHmA73YILeJn0tA8uW2yClg1AxMpqoO6VU08iGbhPk-EbZXakUmAyYy6DMbhwf4mlTLYhQ)
+The third method is through the world modeler's supermaas framework. That process is not available to the public yet so I will not explain that process here. To learn more about world modelers you can read the summary here:  https://www.darpa.mil/program/world-modelers.
 
 
 ## Inputs
