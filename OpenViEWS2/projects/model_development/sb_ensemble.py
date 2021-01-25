@@ -338,8 +338,8 @@ if int(start_date) < int(period_c.times_predict[0]):
 elif int(start_date) > int(max(period_c.times_predict)):
     start_date = int(max(period_c.times_predict))
 
-if int(end_date) < int(args.start_date):
-    end_date = int(args.start_date) + 1
+if int(end_date) < int(start_date):
+    end_date = int(start_date) + 1
 if int(end_date) > int(max(period_c.times_predict)):
     end_date = max(period_c.times_predict)
 
