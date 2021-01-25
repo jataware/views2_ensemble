@@ -17,7 +17,7 @@ Hegre, Håvard, Marie Allansson, Matthias Basedau, Michael Colaresi, Mihai Croic
  **Options**:
  There are three different ways to run this ensemble. 
  
- The first method is locally, which is explained in detail [here (readme)](https://github.com/jataware/views2_ensemble/blob/main/OpenViEWS2/README.md). 
+  **I**: The first method is locally, which is explained in detail [here (readme)](https://github.com/jataware/views2_ensemble/blob/main/OpenViEWS2/README.md). 
  
  Process:
  
@@ -31,7 +31,7 @@ Hegre, Håvard, Marie Allansson, Matthias Basedau, Michael Colaresi, Mihai Croic
 
 5. See results from model in results folder. 
 
-The second method is also run locally, but you build the models yourself with the latest data available. explained in detail after the first method [here (readme)](https://github.com/jataware/views2_ensemble/blob/main/OpenViEWS2/README.md). 
+ **II**: The second method is also run locally, but you build the models yourself with the latest data available. explained in detail after the first method [here (readme)](https://github.com/jataware/views2_ensemble/blob/main/OpenViEWS2/README.md). 
 
 Process:
 
@@ -48,7 +48,7 @@ Process:
  6. See results from model in results folder. 
  
 
-The third method is through the world modeler's supermaas framework. That process is not available to the public yet so I will not explain that process here. To learn more about world modelers you can read the summary here:  https://www.darpa.mil/program/world-modelers.
+ **III**: The third method is through the world modeler's supermaas framework. That process is not available to the public yet so I will not explain that process here. To learn more about world modelers you can read the summary here:  https://www.darpa.mil/program/world-modelers.
 
 
 ## Inputs
