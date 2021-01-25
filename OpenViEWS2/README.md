@@ -1,5 +1,5 @@
 # ViEWS2
-## **Simple start**
+## **I: Simple start**
 To run the views ensemble with pretrained models please follow these directions.
 
  1. First clone the repo:
@@ -54,7 +54,7 @@ Only a subset of countries may have their parameters perturbed. They are:
 
 If you just wanted to run the ensemble with exposed parameters don't continue. Below is for building the models locally instead of downloading pretrained models. 
 
-## **Getting started with building models locally**
+## **II: Getting started with building models locally**
 Getting started with building models locally.
 Clone this repo.
 
@@ -221,6 +221,7 @@ d. Period C trains on all data up to last month of data. Then it predicts from t
 
 16. This will build the models. It will take a long time because there are 14 models to build and there is a lot of data. Once the models have been built we can zip up the storage folder and push it to s3.
 
+## For updating models in S3 *Ignore if not part of jataware or world modelers.
 ## Upload models and new data to s3
 	
 This part is pretty simple. 
@@ -229,7 +230,7 @@ This part is pretty simple.
 
 	    cd /OpenViEWS2/storage/
 		zip -r ../storage.zip .
-2. Now we have our zipped data and models. We can use the upload_to_s3.py script for that.
+2. Now we have our zipped data and models. We can use the upload_to_s3.py script for that. You will need to add the access keys to the script for this to work.
 				
 
 		   python ~/views2_ensemble_updated/OpenViEWS2/projects/model_development/upload_to_s3.py
