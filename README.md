@@ -27,18 +27,18 @@ Hegre, Håvard, Marie Allansson, Matthias Basedau, Michael Colaresi, Mihai Croic
 
 The second method is also run locally, but you build the models yourself with the latest data available. explained in detail after the first method [here (readme)](https://github.com/jataware/views2_ensemble/blob/main/OpenViEWS2/README.md). 
 	 Process:
-	 
-		 1. Clone git repo
-		 
-		 2. Pull docker image
-		 
-		 3. Fetch latest data from source
-		 
-		 4. Build the models locally
-		 
-		 5. Run docker image with parameters perturbed or not.
-		 
-		 6. See results from model in results folder. 
+
+ 1. Clone git repo
+
+ 2. Pull docker image
+
+ 3. Fetch latest data from source
+
+ 4. Build the models locally
+
+ 5. Run docker image with parameters perturbed or not.
+
+ 6. See results from model in results folder. 
 
 The third method is through the world modeler's supermaas framework. That process is not available to the public yet so I will not explain that process here. To learn more about world modelers you can read the summary here:  https://www.darpa.mil/program/world-modelers.
 
