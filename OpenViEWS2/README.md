@@ -52,7 +52,9 @@ Only a subset of countries may have their parameters perturbed. They are:
 -   Central African Republic
 -   Uganda
 
+If you just wanted to run the ensemble with exposed parameters don't continue. Below is for building the models locally instead of downloading pretrained models. 
 
+## **Getting started with building models locally**
 Getting started with building models locally.
 Clone this repo.
 
@@ -232,4 +234,4 @@ This part is pretty simple.
 
 		   python ~/views2_ensemble_updated/OpenViEWS2/projects/model_development/upload_to_s3.py
 		
-3. 
+The models should now be in s3. 
