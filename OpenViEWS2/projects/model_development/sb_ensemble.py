@@ -243,7 +243,7 @@ param_mapping = {
 
 
 def perturb_col(
-    cshapArray, arrayOfPrediction, param_mapping, df, columnPerturb, percentIncrease
+    cshapeArray, arrayOfPrediction, param_mapping, df, columnPerturb, percentIncrease
 ):
     """
     Increase by column by percentage
@@ -290,7 +290,7 @@ if args.country != "All":
         percentIncrease = float(args.gdp_pcap)
         columnPerturb = "wdi_ny_gdp_pcap_pp_kd"
         df = perturb_col(
-            cshapArray,
+            cshapeArray,
             arrayOfPrediction,
             param_mapping,
             df,
@@ -303,7 +303,7 @@ if args.country != "All":
         percentIncrease = float(args.infant_mortality)
         columnPerturb = "wdi_sp_dyn_imrt_in"
         df = perturb_col(
-            cshapArray,
+            cshapeArray,
             arrayOfPrediction,
             param_mapping,
             df,
@@ -317,7 +317,7 @@ if args.country != "All":
         percentIncrease = float(args.liberalDemocracyIndex)
         columnPerturb = "vdem_v2x_libdem"
         df = perturb_col(
-            cshapArray,
+            cshapeArray,
             arrayOfPrediction,
             param_mapping,
             df,
@@ -331,7 +331,7 @@ if args.country != "All":
         percentIncrease = float(args.foodProdIndex)
         columnPerturb = "wdi_ag_prd_food_xd"
         df = perturb_col(
-            cshapArray,
+            cshapeArray,
             arrayOfPrediction,
             param_mapping,
             df,
@@ -357,7 +357,7 @@ elif args.country == "All":
         percentIncrease = float(args.gdp_pcap)
         columnPerturb = "wdi_ny_gdp_pcap_pp_kd"
         df = perturb_col(
-            cshapArray,
+            cshapeArray,
             arrayOfPrediction,
             param_mapping,
             df,
@@ -370,7 +370,7 @@ elif args.country == "All":
         percentIncrease = float(args.infant_mortality)
         columnPerturb = "wdi_sp_dyn_imrt_in"
         df = perturb_col(
-            cshapArray,
+            cshapeArray,
             arrayOfPrediction,
             param_mapping,
             df,
@@ -383,7 +383,7 @@ elif args.country == "All":
         percentIncrease = float(args.liberalDemocracyIndex)
         columnPerturb = "vdem_v2x_libdem"
         df = perturb_col(
-            cshapArray,
+            cshapeArray,
             arrayOfPrediction,
             param_mapping,
             df,
@@ -396,7 +396,7 @@ elif args.country == "All":
         percentIncrease = float(args.foodProdIndex)
         columnPerturb = "wdi_ag_prd_food_xd"
         df = perturb_col(
-            cshapArray,
+            cshapeArray,
             arrayOfPrediction,
             param_mapping,
             df,
