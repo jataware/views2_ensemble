@@ -199,6 +199,7 @@ Countries = [
 # All features that have 0.8 or greater correlation with the primary features to perturb (abs value of corr coefficient)
 param_mapping = {
     "wdi_sp_dyn_imrt_in": [
+        "wdi_sp_dyn_imrt_in",
         "wdi_sp_dyn_imrt_ma_in",
         "wdi_sp_dyn_le00_fe_in",
         "wdi_sp_dyn_le00_in",
@@ -207,6 +208,7 @@ param_mapping = {
         "wdi_sp_dyn_tfrt_in",
     ],
     "wdi_ny_gdp_pcap_pp_kd": [
+        "wdi_ny_gdp_pcap_pp_kd",
         "wdi_ny_gnp_pcap_pp_cd",
         "wdi_ny_gnp_pcap_pp_kd",
         "wdi_sl_gdp_pcap_em_kd",
@@ -221,8 +223,9 @@ param_mapping = {
         "wdi_sh_xpd_chex_pc_cd",
         "wdi_sh_xpd_oopc_pp_cd",
     ],
-    "wdi_ag_prd_food_xd": ["wdi_ag_prd_lvsk_xd"],
+    "wdi_ag_prd_food_xd": ["wdi_ag_prd_food_xd", "wdi_ag_prd_lvsk_xd"],
     "vdem_v2x_libdem": [
+        "vdem_v2x_libdem",
         "vdem_v2x_mpi",
         "vdem_v2x_polyarchy",
         "vdem_v2x_partipdem",
