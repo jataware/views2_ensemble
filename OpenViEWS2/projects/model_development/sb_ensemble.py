@@ -257,8 +257,8 @@ def perturb_col(
                         df.loc[(date, country)][feat_to_perturb] * percentIncrease
                         + df.loc[(date, country)][feat_to_perturb]
                     )
-        except:
-            print("error")
+        except Exception as e:
+            print(f"Error perturbing {feat_to_perturb}: {e}")
     return df
 
 
@@ -284,7 +284,7 @@ if args.country != "All":
 
     # mutate df gdp
     if float(args.gdp_pcap) != 0:
-        print("gdp not none")
+        print("gdp", args.gdp_pcap)
 
         # perform perturbations of all relevant columns
         percentIncrease = float(args.gdp_pcap)
@@ -299,6 +299,7 @@ if args.country != "All":
         )
 
     if float(args.infant_mortality) != 0:
+        print("infant mortality", args.infant_mortality)
         # perform perturbations of all relevant columns
         percentIncrease = float(args.infant_mortality)
         columnPerturb = "wdi_sp_dyn_imrt_in"
@@ -352,7 +353,7 @@ elif args.country == "All":
             cshapeArray.append(cshape)
             print(cshapeArray)
     if float(args.gdp_pcap) != 0:
-        print("gdp not none")
+        print("gdp", args.gdp_pcap)
 
         percentIncrease = float(args.gdp_pcap)
         columnPerturb = "wdi_ny_gdp_pcap_pp_kd"
@@ -366,7 +367,7 @@ elif args.country == "All":
         )
 
     if float(args.infant_mortality) != 0:
-
+        print("infant mortality", args.infant_mortality)
         percentIncrease = float(args.infant_mortality)
         columnPerturb = "wdi_sp_dyn_imrt_in"
         df = perturb_col(
