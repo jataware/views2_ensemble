@@ -17,19 +17,19 @@ parser.add_argument("--foodProdIndex", default="0")
 args = parser.parse_args()
 print(
     "start_date",
-    args.start_date,
+    start_date,
     "end_date",
-    args.end_date,
+    end_date,
     "country",
-    type(args.country),
+    type(country),
     "gdp",
-    float(args.gdp_pcap),
+    float(gdp_pcap),
     "inf",
-    float(args.infant_mortality),
+    float(infant_mortality),
     "lib",
-    args.liberalDemocracyIndex,
+    liberalDemocracyIndex,
     "food",
-    args.foodProdIndex,
+    foodProdIndex,
 )
 
 
@@ -68,8 +68,8 @@ logging.basicConfig(
 
 # covert times
 date1 = datetime.datetime.strptime(str("1980-01"), "%Y-%m")
-start_str = datetime.datetime.strptime(str(args.start_date), "%Y-%m")
-end_str = datetime.datetime.strptime(str(args.end_date), "%Y-%m")
+start_str = datetime.datetime.strptime(str(start_date), "%Y-%m")
+end_str = datetime.datetime.strptime(str(end_date), "%Y-%m")
 
 
 def convertDate(date1980, date2):
@@ -104,8 +104,6 @@ arrayOfPredictionSum = [*range(period_c.predict_start, period_c.predict_end, 1)]
 print("arrayOfPrediction", arrayOfPrediction)
 
 # country perturb
-
-
 Countries = [
     {"Cote d'Ivoire": 40},
     {"Ghana": 41},
@@ -196,9 +194,17 @@ Countries = [
     {"South Sudan": 246},
 ]
 
+countries_mapping = {}
+for c in Countries:
+    for kk, vv in c.items():
+        if kk not in countries_mapping:
+            countries_mapping[kk] = [vv]
+        else:
+            countries_mapping[kk].append(vv)
+
 # All features that have 0.8 or greater correlation with the primary features to perturb (abs value of corr coefficient)
 param_mapping = {
-    "wdi_sp_dyn_imrt_in": [
+    "infant_mortality": [
         "wdi_sp_dyn_imrt_in",
         "wdi_sp_dyn_imrt_ma_in",
         "wdi_sp_dyn_le00_fe_in",
@@ -207,7 +213,7 @@ param_mapping = {
         "wdi_sp_dyn_to65_fe_zs",
         "wdi_sp_dyn_tfrt_in",
     ],
-    "wdi_ny_gdp_pcap_pp_kd": [
+    "gdp_per_capita": [
         "wdi_ny_gdp_pcap_pp_kd",
         "wdi_ny_gnp_pcap_pp_cd",
         "wdi_ny_gnp_pcap_pp_kd",
@@ -223,8 +229,8 @@ param_mapping = {
         "wdi_sh_xpd_chex_pc_cd",
         "wdi_sh_xpd_oopc_pp_cd",
     ],
-    "wdi_ag_prd_food_xd": ["wdi_ag_prd_food_xd", "wdi_ag_prd_lvsk_xd"],
-    "vdem_v2x_libdem": [
+    "food_production": ["wdi_ag_prd_food_xd", "wdi_ag_prd_lvsk_xd"],
+    "liberal_democracy": [
         "vdem_v2x_libdem",
         "vdem_v2x_mpi",
         "vdem_v2x_polyarchy",
@@ -246,162 +252,40 @@ param_mapping = {
 
 
 def perturb_col(
-    cshapeArray, arrayOfPrediction, param_mapping, df, columnPerturb, percentIncrease
+    country, param_mapping, df, columnPerturb, percentIncrease
 ):
     """
     Increase by column by percentage
     """
+    idx = pd.IndexSlice
     features = param_mapping[columnPerturb]
     for feat_to_perturb in features:
-        try:
-            for country in cshapeArray:
-                for date in arrayOfPrediction:
-                    df.loc[(date, country), feat_to_perturb] = (
-                        df.loc[(date, country)][feat_to_perturb] * percentIncrease
-                        + df.loc[(date, country)][feat_to_perturb]
-                    )
-        except Exception as e:
-            print(f"Error perturbing {feat_to_perturb}: {e}")
+        print("feature", feat_to_perturb)
+        if country == "All":
+            df[feat_to_perturb] = df[feat_to_perturb].apply(lambda x: x * (1 + percentIncrease))
+        else:
+            df.loc[idx[:,country, :],feat_to_perturb] = df.loc[idx[:,country, :],feat_to_perturb]\
+                .apply(lambda x: x * (1 + percentIncrease))
     return df
 
 
-if args.country != "All":
-    filterCounties = []
-    filterCounties.append(eval(args.country))
-    print("c:", filterCounties)
+if country != "All":
+    country = countries_mapping[country]
 
-    cshapeArray = []
-    for filteredCounty in filterCounties:
+features = [(args.gdp_pcap, "gdp_per_capita"),
+            (args.infant_mortality, "infant_mortality"),
+            (args.liberalDemocracyIndex, "liberal_democracy"),
+            (args.foodProdIndex, "food_production")]
 
-        for country in Countries:
-            for (
-                country,
-                cshape,
-            ) in (
-                country.items()
-            ):  # for name, age in dictionary.iteritems():  (for Python 2.x)
-
-                if country == filteredCounty:
-                    cshapeArray.append(cshape)
-                    print(cshapeArray)
-
-    # mutate df gdp
-    if float(args.gdp_pcap) != 0:
-        print("gdp", args.gdp_pcap)
+for f in features:
+    if float(f[0]) != 0:
+        print(f[1], f[0])
 
         # perform perturbations of all relevant columns
-        percentIncrease = float(args.gdp_pcap)
-        columnPerturb = "wdi_ny_gdp_pcap_pp_kd"
+        percentIncrease = float(f[0])
+        columnPerturb = f[1]
         df = perturb_col(
-            cshapeArray,
-            arrayOfPrediction,
-            param_mapping,
-            df,
-            columnPerturb,
-            percentIncrease,
-        )
-
-    if float(args.infant_mortality) != 0:
-        print("infant mortality", args.infant_mortality)
-        # perform perturbations of all relevant columns
-        percentIncrease = float(args.infant_mortality)
-        columnPerturb = "wdi_sp_dyn_imrt_in"
-        df = perturb_col(
-            cshapeArray,
-            arrayOfPrediction,
-            param_mapping,
-            df,
-            columnPerturb,
-            percentIncrease,
-        )
-
-    if float(args.liberalDemocracyIndex) != 0:
-        print("lib", args.liberalDemocracyIndex)
-        # perform perturbations of all relevant columns
-        percentIncrease = float(args.liberalDemocracyIndex)
-        columnPerturb = "vdem_v2x_libdem"
-        df = perturb_col(
-            cshapeArray,
-            arrayOfPrediction,
-            param_mapping,
-            df,
-            columnPerturb,
-            percentIncrease,
-        )
-
-    if float(args.foodProdIndex) != 0:
-        print("food", args.foodProdIndex)
-        # perform perturbations of all relevant columns
-        percentIncrease = float(args.foodProdIndex)
-        columnPerturb = "wdi_ag_prd_food_xd"
-        df = perturb_col(
-            cshapeArray,
-            arrayOfPrediction,
-            param_mapping,
-            df,
-            columnPerturb,
-            percentIncrease,
-        )
-
-elif args.country == "All":
-    # array of all countries
-    cshapeArray = []
-    for country in Countries:
-        for (
             country,
-            cshape,
-        ) in (
-            country.items()
-        ):  # for name, age in dictionary.iteritems():  (for Python 2.x)
-            cshapeArray.append(cshape)
-            print(cshapeArray)
-    if float(args.gdp_pcap) != 0:
-        print("gdp", args.gdp_pcap)
-
-        percentIncrease = float(args.gdp_pcap)
-        columnPerturb = "wdi_ny_gdp_pcap_pp_kd"
-        df = perturb_col(
-            cshapeArray,
-            arrayOfPrediction,
-            param_mapping,
-            df,
-            columnPerturb,
-            percentIncrease,
-        )
-
-    if float(args.infant_mortality) != 0:
-        print("infant mortality", args.infant_mortality)
-        percentIncrease = float(args.infant_mortality)
-        columnPerturb = "wdi_sp_dyn_imrt_in"
-        df = perturb_col(
-            cshapeArray,
-            arrayOfPrediction,
-            param_mapping,
-            df,
-            columnPerturb,
-            percentIncrease,
-        )
-
-    if float(args.liberalDemocracyIndex) != 0:
-        print("lib", args.liberalDemocracyIndex)
-        percentIncrease = float(args.liberalDemocracyIndex)
-        columnPerturb = "vdem_v2x_libdem"
-        df = perturb_col(
-            cshapeArray,
-            arrayOfPrediction,
-            param_mapping,
-            df,
-            columnPerturb,
-            percentIncrease,
-        )
-
-    if float(args.foodProdIndex) != 0:
-        print("food", args.foodProdIndex)
-        percentIncrease = float(args.foodProdIndex)
-        columnPerturb = "wdi_ag_prd_food_xd"
-        df = perturb_col(
-            cshapeArray,
-            arrayOfPrediction,
             param_mapping,
             df,
             columnPerturb,
