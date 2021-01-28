@@ -272,8 +272,10 @@ def perturb_col(country, param_mapping, df, columnPerturb, percentIncrease):
     return df
 
 
-if country != "All":
-    country = countries_mapping[country]
+if args.country != "All":
+    country = countries_mapping[args.country]
+else:
+    country = "All"
 
 features = [
     (args.gdp_pcap, "gdp_per_capita"),
