@@ -17,19 +17,19 @@ parser.add_argument("--foodProdIndex", default="0")
 args = parser.parse_args()
 print(
     "start_date",
-    start_date,
+    args.start_date,
     "end_date",
-    end_date,
+    args.end_date,
     "country",
-    type(country),
+    type(args.country),
     "gdp",
-    float(gdp_pcap),
+    float(args.gdp_pcap),
     "inf",
-    float(infant_mortality),
+    float(args.infant_mortality),
     "lib",
-    liberalDemocracyIndex,
+    args.liberalDemocracyIndex,
     "food",
-    foodProdIndex,
+    args.foodProdIndex,
 )
 
 
@@ -58,6 +58,8 @@ from views.apps.pipeline.models_cm import all_cm_models_by_name
 from views.apps.pipeline.models_pgm import all_pgm_models_by_name
 from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
 
+import pandas as pd
+
 # logging errors
 
 logging.basicConfig(
@@ -68,8 +70,8 @@ logging.basicConfig(
 
 # covert times
 date1 = datetime.datetime.strptime(str("1980-01"), "%Y-%m")
-start_str = datetime.datetime.strptime(str(start_date), "%Y-%m")
-end_str = datetime.datetime.strptime(str(end_date), "%Y-%m")
+start_str = datetime.datetime.strptime(str(args.start_date), "%Y-%m")
+end_str = datetime.datetime.strptime(str(args.end_date), "%Y-%m")
 
 
 def convertDate(date1980, date2):
@@ -251,9 +253,7 @@ param_mapping = {
 }
 
 
-def perturb_col(
-    country, param_mapping, df, columnPerturb, percentIncrease
-):
+def perturb_col(country, param_mapping, df, columnPerturb, percentIncrease):
     """
     Increase by column by percentage
     """
@@ -262,20 +262,25 @@ def perturb_col(
     for feat_to_perturb in features:
         print("feature", feat_to_perturb)
         if country == "All":
-            df[feat_to_perturb] = df[feat_to_perturb].apply(lambda x: x * (1 + percentIncrease))
+            df[feat_to_perturb] = df[feat_to_perturb].apply(
+                lambda x: x * (1 + percentIncrease)
+            )
         else:
-            df.loc[idx[:,country, :],feat_to_perturb] = df.loc[idx[:,country, :],feat_to_perturb]\
-                .apply(lambda x: x * (1 + percentIncrease))
+            df.loc[idx[:, country, :], feat_to_perturb] = df.loc[
+                idx[:, country, :], feat_to_perturb
+            ].apply(lambda x: x * (1 + percentIncrease))
     return df
 
 
 if country != "All":
     country = countries_mapping[country]
 
-features = [(args.gdp_pcap, "gdp_per_capita"),
-            (args.infant_mortality, "infant_mortality"),
-            (args.liberalDemocracyIndex, "liberal_democracy"),
-            (args.foodProdIndex, "food_production")]
+features = [
+    (args.gdp_pcap, "gdp_per_capita"),
+    (args.infant_mortality, "infant_mortality"),
+    (args.liberalDemocracyIndex, "liberal_democracy"),
+    (args.foodProdIndex, "food_production"),
+]
 
 for f in features:
     if float(f[0]) != 0:
