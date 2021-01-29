@@ -149,20 +149,7 @@ looks for any parameters passed by the user to determine if the dataframe needs 
 
 ### Parameterization by country
 
-Only a subset of countries may have their parameters perturbed. They are:
-
-* Ethiopia
-* Sudan
-* South Sudan
-* Kenya
-* Egypt
-* Libya
-* Saudi Arabia
-* Somalia
-* Eritrea
-* Chad
-* Central African Republic
-* Uganda
+A complete list of countries which may be selected for parameterization can be found in `[countries.csv](countries.csv)`.
 
 ## Citation
 > ViEWS:
