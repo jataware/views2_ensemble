@@ -63,13 +63,13 @@ docker run \
 	--start_date 2020-10 \
 	--end_date 2023-11 \
 	--country Ethiopia \
-	--gdp_pcap -.25 \
-	--infant_mortality -.25 \
-	--liberalDemocracyIndex -.35 \
+	--gdp_pcap -0.25 \
+	--infant_mortality 0.25 \
+	--liberalDemocracyIndex -0.35 \
 	--foodProdIndex -0.2
 ```
 
-Here we simulate a case where Ethiopia has a systemic shock at the outset of the simulation, causes a 25% reduction in GDP per capita, a 25% decrease in infant mortality, a 35% decrease in liberal democracy, and a 20% decrease in food production.
+Here we simulate a case where Ethiopia has a systemic shock at the outset of the simulation, causes a 25% reduction in GDP per capita, a 25% increase in infant mortality, a 35% decrease in liberal democracy, and a 20% decrease in food production.
 
 Note that in either case, two volumes are mounted to the Docker container:
 
@@ -149,7 +149,7 @@ looks for any parameters passed by the user to determine if the dataframe needs 
 
 ### Parameterization by country
 
-A complete list of countries which may be selected for parameterization can be found in `[countries.csv](countries.csv)`.
+A complete list of countries which may be selected for parameterization can be found in [`countries.csv`](countries.csv).
 
 ## Citation
 > ViEWS:
