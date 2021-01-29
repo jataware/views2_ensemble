@@ -12,9 +12,9 @@ This ensemble model is exposed via a command line interface (CLI) which allows a
 3. [Models](#models)
 4. [The ViEWS Framework](#the-views-framework)
 5. [The Ensemble Workflow](#the-ensemble-workflow)
-  - [Dockerization](#dockerization)
-  - [Model Parameters](#model-parameters)
-  - [Parameterization by Country](#parameterization-by-country)
+    - [Dockerization](#dockerization)
+    - [Model Parameters](#model-parameters)
+    - [Parameterization by Country](#parameterization-by-country)
 6. [Citation](#citation)
 
 # **Usage**
