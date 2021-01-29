@@ -234,7 +234,7 @@ param_mapping = {
     ],
     "food_production": [("wdi_ag_prd_lvsk_xd", 1), ("wdi_ag_prd_lvsk_xd", 1)],
     "liberal_democracy": [
-        ("vdem_v2x_libdem", 1)
+        ("vdem_v2x_libdem", 1),
         ("vdem_v2x_mpi", 1),
         ("vdem_v2x_polyarchy", 1),
         ("vdem_v2x_partipdem", 1),
