@@ -205,50 +205,51 @@ for c in Countries:
             countries_mapping[kk].append(vv)
 
 # All features that have 0.8 or greater correlation with the primary features to perturb (abs value of corr coefficient)
+# some are negatively correlated, as indicated by the second item in the tuple
 param_mapping = {
     "infant_mortality": [
-        "wdi_sp_dyn_imrt_in",
-        "wdi_sp_dyn_imrt_ma_in",
-        "wdi_sp_dyn_le00_fe_in",
-        "wdi_sp_dyn_le00_in",
-        "wdi_sp_dyn_le00_ma_in",
-        "wdi_sp_dyn_to65_fe_zs",
-        "wdi_sp_dyn_tfrt_in",
+        ("wdi_sp_dyn_imrt_in", 1),
+        ("wdi_sp_dyn_imrt_ma_in", 1),
+        ("wdi_sp_dyn_tfrt_in", 1),
+        ("wdi_sp_dyn_to65_fe_zs", -1),
+        ("wdi_sp_dyn_le00_ma_in", -1),
+        ("wdi_sp_dyn_le00_in", -1),
+        ("wdi_sp_dyn_le00_fe_in", -1),
     ],
     "gdp_per_capita": [
-        "wdi_ny_gdp_pcap_pp_kd",
-        "wdi_ny_gnp_pcap_pp_cd",
-        "wdi_ny_gnp_pcap_pp_kd",
-        "wdi_sl_gdp_pcap_em_kd",
-        "wdi_ny_gnp_pcap_cd",
-        "wdi_ny_gnp_pcap_kd",
-        "wdi_sh_xpd_chex_pp_cd",
-        "wdi_sh_xpd_pvtd_pp_cd",
-        "wdi_sh_xpd_oopc_pc_cd",
-        "wdi_sh_xpd_ghed_pp_cd",
-        "wdi_sh_xpd_pvtd_pc_cd",
-        "wdi_si_pov_umic",
-        "wdi_sh_xpd_chex_pc_cd",
-        "wdi_sh_xpd_oopc_pp_cd",
+        ("wdi_ny_gdp_pcap_pp_kd", 1),
+        ("wdi_ny_gnp_pcap_pp_cd", 1),
+        ("wdi_ny_gnp_pcap_pp_kd", 1),
+        ("wdi_sl_gdp_pcap_em_kd", 1),
+        ("wdi_ny_gnp_pcap_cd", 1),
+        ("wdi_ny_gnp_pcap_kd", 1),
+        ("wdi_sh_xpd_chex_pp_cd", 1),
+        ("wdi_sh_xpd_pvtd_pp_cd", 1),
+        ("wdi_sh_xpd_oopc_pc_cd", 1),
+        ("wdi_sh_xpd_ghed_pp_cd", 1),
+        ("wdi_sh_xpd_pvtd_pc_cd", 1),
+        ("wdi_sh_xpd_chex_pc_cd", 1),
+        ("wdi_sh_xpd_oopc_pp_cd", 1),
+        ("wdi_si_pov_umic", -1),
     ],
-    "food_production": ["wdi_ag_prd_food_xd", "wdi_ag_prd_lvsk_xd"],
+    "food_production": [("wdi_ag_prd_lvsk_xd", 1), ("wdi_ag_prd_lvsk_xd", 1)],
     "liberal_democracy": [
-        "vdem_v2x_libdem",
-        "vdem_v2x_mpi",
-        "vdem_v2x_polyarchy",
-        "vdem_v2x_partipdem",
-        "vdem_v2x_liberal",
-        "vdem_v2xel_frefair",
-        "vdem_v2xnp_pres",
-        "vdem_v2x_neopat",
-        "vdem_v2x_regime_amb",
-        "vdem_v2xcl_rol",
-        "vdem_v2x_veracc",
-        "vdem_v2x_regime",
-        "vdem_v2x_rule",
-        "vdem_v2xcl_disc",
-        "vdem_v2xlg_legcon",
-        "vdem_v2xdl_delib",
+        ("vdem_v2x_libdem", 1)
+        ("vdem_v2x_mpi", 1),
+        ("vdem_v2x_polyarchy", 1),
+        ("vdem_v2x_partipdem", 1),
+        ("vdem_v2x_liberal", 1),
+        ("vdem_v2xel_frefair", 1),
+        ("vdem_v2x_regime_amb", 1),
+        ("vdem_v2xcl_rol", 1),
+        ("vdem_v2x_veracc", 1),
+        ("vdem_v2x_regime", 1),
+        ("vdem_v2x_rule", 1),
+        ("vdem_v2xcl_disc", 1),
+        ("vdem_v2xlg_legcon", 1),
+        ("vdem_v2xdl_delib", 1),
+        ("vdem_v2x_neopat", -1),
+        ("vdem_v2xnp_pres", -1),
     ],
 }
 
@@ -259,16 +260,18 @@ def perturb_col(country, param_mapping, df, columnPerturb, percentIncrease):
     """
     idx = pd.IndexSlice
     features = param_mapping[columnPerturb]
-    for feat_to_perturb in features:
+    for f in features:
+        feat_to_perturb = f[0]
+        direction = f[1]
         print("feature", feat_to_perturb)
         if country == "All":
             df[feat_to_perturb] = df[feat_to_perturb].apply(
-                lambda x: x * (1 + percentIncrease)
+                lambda x: x * (1 + (percentIncrease*direction))
             )
         else:
             df.loc[idx[:, country, :], feat_to_perturb] = df.loc[
                 idx[:, country, :], feat_to_perturb
-            ].apply(lambda x: x * (1 + percentIncrease))
+            ].apply(lambda x: x * (1 + (percentIncrease*direction)))
     return df
 
 
