@@ -51,7 +51,7 @@ In the map above, the darker color indicates a higher level of average predicted
 
 Additionally, the user may perturb specific parameters. See the section on [Model Parameters](#model-parameters) for how to submit additional parameters. Below, we can see that by perturbing various parameters, the level of predicted conflict for Ethiopia varies over time.
 
-<img src="imgs/Ethiopia_Baseline_vs_ Perturbed.png" width="800" />
+<img src="imgs/Ethiopia_Baseline_vs_Perturbed.png" width="800" />
 
 This simulated prediction was generated with the following Docker command:
 
