@@ -1,56 +1,83 @@
 # ViEWS2 Ensemble
 
 ## Overview
-This repo implements a version of the [Violence Early-Warning System (ViEWS)](https://www.pcr.uu.se/research/views/), developed by [Uppsala University's Department of Peace and Conflict Research](https://www.pcr.uu.se/?languageId=1). Building on the [open source work](https://github.com/UppsalaConflictDataProgram/OpenViEWS2) of the ViEWS team, we provide a machine learning based ensemble model to predict state based violence throughout Africa. The ensemble uses a variety of open source data that has been organized collated by the ViEWS team into a single, large data frame. The model predicts probability of violence 3 years into the future and should be retrained using updated data every few months to ensure the most accurate predictions. 
+This repo implements a version of the [Violence Early-Warning System (ViEWS)](https://www.pcr.uu.se/research/views/), developed by [Uppsala University's Department of Peace and Conflict Research](https://www.pcr.uu.se/?languageId=1). Building on the [open source work](https://github.com/UppsalaConflictDataProgram/OpenViEWS2) of the ViEWS team, we provide a machine learning based ensemble model to predict state based violence throughout Africa. The ensemble of random forest classifiers uses a variety of open source data that has been collated by the ViEWS team into a single, large data frame containing over 3,000 features. The model predicts probability of violence 3 years into the future and should be retrained using updated data every few months to ensure the most accurate predictions. 
  
 This ensemble model is exposed via a command line interface (CLI) which allows a modeler to perturb key model parameters prior to executing the pre-trained ensemble to predict future violence in a given country.
 
-> **Citation**: 
-ViEWS:
-Hegre, Håvard, Marie Allansson, Matthias Basedau, Michael Colaresi, Mihai Croicu, Hanne Fjelde, Frederick Hoyles, Lisa Hultman, Stina Högbladh, Naima Mouhleb, Sayeed Auwn Muhammad, Desiree Nilsson, Håvard Mokleiv Nygård, Gudlaug Olafsdottir, Kristina Petrova, David Randahl, Espen Geelmuyden Rød, Nina von Uexkull, Jonas Vestby (2019) ‘ViEWS: A political violence early-warning system’, _Journal of Peace Research_, 56(2), pp. 155–174. doi: [10.1177/0022343319823860](https://doi.org/10.1177/0022343319823860).
+# Contents
 
-> **Github**: [https://github.com/UppsalaConflictDataProgram/OpenViEWS2](https://github.com/UppsalaConflictDataProgram/OpenViEWS2)
-
+1. [Usage](#usage)
+2. [Inputs](#inputs)
+3. [Models](#models)
+4. [The ViEWS Framework](#the-views-framework)
+5. [The Ensemble Workflow](#the-ensemble-workflow)
+    - [Dockerization](#dockerization)
+    - [Model Parameters](#model-parameters)
+    - [Parameterization by Country](#parameterization-by-country)
+6. [Citation](#citation)
 
 # **Usage**
 
- **Options**:
- There are three different ways to run this ensemble. 
+The quickest way to get started with the ViEWS Ensemble is by using our pre-built Docker image `jataware/views2_ensemble`. To use this, you should first run 
+
+```
+docker pull jataware/views2_ensemble
+```
+
+Then from this repository run:
+
+```
+cd OpenViEWS2
+python3 fetch_data_models.py
+```
+
+This will download and unzip all appropriate models and input data from S3. Depending on your network connection, this could take between 1 to 2 hours. Once completed, you are ready to run the model. You can do so with:
+
+```
+docker run \
+	-v $PWD/storage:/usr/local/src/Views_dir/storage/ \
+	-v $PWD/results:/usr/local/src/Views_dir/storage/predictions/ \
+	jataware/views2_ensemble \
+	--start_date 2020-10 \
+	--end_date 2023-11
+```
+
+This will produce a baseline prediction for 2020-10 through 2023-11 and include no parameter perturbations. 
+
+<img src="imgs/Predicted_Conflict_Level.png" width="400" />
+
+In the map above, the darker color indicates a higher level of average predicted conflict during the forecast period.
+
+Additionally, the user may perturb specific parameters. See the section on [Model Parameters](#model-parameters) for how to submit additional parameters. Below, we can see that by perturbing various parameters, the level of predicted conflict for Ethiopia varies over time.
+
+<img src="imgs/Ethiopia_Baseline_vs_Perturbed.png" width="800" />
+
+This simulated prediction was generated with the following Docker command:
+
+```
+docker run \
+	-v $PWD/storage:/usr/local/src/Views_dir/storage/ \
+	-v $PWD/results:/usr/local/src/Views_dir/storage/predictions/ \
+	views_params \
+	--start_date 2020-10 \
+	--end_date 2023-11 \
+	--country Ethiopia \
+	--gdp_pcap -0.25 \
+	--infant_mortality 0.25 \
+	--liberalDemocracyIndex -0.35 \
+	--foodProdIndex -0.2
+```
+
+Here we simulate a case where Ethiopia has a systemic shock at the outset of the simulation, causes a 25% reduction in GDP per capita, a 25% increase in infant mortality, a 35% decrease in liberal democracy, and a 20% decrease in food production.
+
+Note that in either case, two volumes are mounted to the Docker container:
+
+1. `/storage` contains the models and input data
+2. `/results` will contain the model outputs. **Run results can be found here.**
+
+For development, testing, and debugging you may wish to run the ensemble model locally. To do this, you can find more [detailed instructions here]
  
-  **I**: The first method is locally, which is explained in detail [here (readme)](https://github.com/jataware/views2_ensemble/blob/main/OpenViEWS2/README.md). 
- 
- Process:
- 
-1. Clone git repo
-
-2. Pull docker image
-
-3. Fetch pretrained models and data
-
-4. Run docker image with parameters perturbed or not.
-
-5. See results from model in results folder. 
-
- **II**: The second method is also run locally, but you build the models yourself with the latest data available. explained in detail after the first method [here (readme)](https://github.com/jataware/views2_ensemble/blob/main/OpenViEWS2/README.md). 
-
-Process:
-
- 1. Clone git repo
-
- 2. Pull docker image
-
- 3. Fetch latest data from source
-
- 4. Build the models locally
-
- 5. Run docker image with parameters perturbed or not.
-
- 6. See results from model in results folder. 
- 
-
- **III**: The third method is through the world modeler's supermaas framework. That process is not available to the public yet so I will not explain that process here. To learn more about world modelers you can read the summary here:  https://www.darpa.mil/program/world-modelers.
-
-
 ## Inputs
 
 The data used in the ensemble model is open source and can be found in the following databases:
@@ -98,7 +125,7 @@ For more information on how the ViEWS framework is set up and how to get started
 Though the ViEWS framework allows modelers to generate their own models, we decided to implement an ensemble of the ViEWS' team standard models which are used for their monthly, public predictions for areas around the world. An example of monthly prediction report can be found [here](http://files.webb.uu.se/uploader/1576/ViEWS-Reports--53-.pdf).
 
 ## The ensemble workflow
-In our workflow, each of the 14 models within the ensemble runs indepdently to generate its own prediction. These predictions are combined to generate a composite prediction. 
+In our workflow, each of the 14 models within the ensemble (all random forests) runs indepdently to generate its own prediction. These predictions are averaged to generate a composite prediction. 
 
 The workflow for training this ensemble is neither quick nor simple due to large space and memory requirements needed to run all 14 models. In total, all the data and cached models are ~70GB. Our goal was to Dockerize a pre-trained version of this ensemble to minimize end-user effort and computation, while offering a reasonable degree of flexibility around perturbing a key set of input parameters. 
 
@@ -120,19 +147,12 @@ looks for any parameters passed by the user to determine if the dataframe needs 
 - `--liberalDemocracyIndex`: a percentage perturbation against liberal democracy index where 0 is baseline (no perturbation)
 - `--foodProdIndex`: a percentage perturbation against the food production index where 0 is baseline (no perturbation).
 
-#### Parameterization by country
+### Parameterization by country
 
-Only a subset of countries may have their parameters perturbed. They are:
+A complete list of countries which may be selected for parameterization can be found in [`countries.csv`](countries.csv).
 
-* Ethiopia
-* Sudan
-* South Sudan
-* Kenya
-* Egypt
-* Libya
-* Saudi Arabia
-* Somalia
-* Eritrea
-* Chad
-* Central African Republic
-* Uganda
+## Citation
+> ViEWS:
+Hegre, Håvard, Marie Allansson, Matthias Basedau, Michael Colaresi, Mihai Croicu, Hanne Fjelde, Frederick Hoyles, Lisa Hultman, Stina Högbladh, Naima Mouhleb, Sayeed Auwn Muhammad, Desiree Nilsson, Håvard Mokleiv Nygård, Gudlaug Olafsdottir, Kristina Petrova, David Randahl, Espen Geelmuyden Rød, Nina von Uexkull, Jonas Vestby (2019) ‘ViEWS: A political violence early-warning system’, _Journal of Peace Research_, 56(2), pp. 155–174. doi: [10.1177/0022343319823860](https://doi.org/10.1177/0022343319823860).
+
+> **Github**: [https://github.com/UppsalaConflictDataProgram/OpenViEWS2](https://github.com/UppsalaConflictDataProgram/OpenViEWS2)
