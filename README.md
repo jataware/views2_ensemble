@@ -59,7 +59,7 @@ This simulated prediction was generated with the following Docker command:
 docker run \
 	-v $PWD/storage:/usr/local/src/Views_dir/storage/ \
 	-v $PWD/results:/usr/local/src/Views_dir/storage/predictions/ \
-	views_params \
+	jataware/views2_ensemble \
 	--start_date 2020-10 \
 	--end_date 2023-11 \
 	--country Ethiopia \
