@@ -11,7 +11,7 @@ To run the views ensemble with pretrained models please follow these directions.
 2. Make sure you have docker installed on your computer. This was tested on linux ubuntu 18.04. Download and install docker.
 3.  Once conda is installed and the repo is downloaded it's time to pull the views2 docker image. You can do this in the terminal by running 
 
-		 docker pull jataware/views2_ensemble:tagname
+		 docker pull jataware/views2_ensemble:latest
 Now navigate to the OpenViEWS2 directory and fetch the prebuilt models. This will take a long time so be patient. We tested this on an AWS server which speed this process up a lot:
 
        cd OpenViEWS2/
